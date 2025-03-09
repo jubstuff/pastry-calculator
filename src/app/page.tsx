@@ -1,18 +1,22 @@
 "use client"
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { RecipeProvider } from '@/lib/context/RecipeContext';
 import { sampleRecipes } from '@/lib/data/sampleRecipes';
 import { useRecipes } from '@/lib/context/RecipeContext';
 import { RecipeList } from '@/components/recipe/RecipeList';
 import { CalculatorForm } from '@/components/calculator/CalculatorForm';
 import { ResultsDisplay } from '@/components/calculator/ResultsDisplay';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 // Apply global high contrast styles if needed
 const highContrastStyles = `
@@ -32,6 +36,18 @@ const highContrastStyles = `
 
 function CalculatorContent() {
   const { selectedRecipe, scaledRecipe, userPreferences, updateUserPreferences } = useRecipes();
+  const [activeStep, setActiveStep] = useState<string>("step1");
+  
+  // Update active step when recipe state changes
+  useEffect(() => {
+    if (scaledRecipe) {
+      setActiveStep("step3");
+    } else if (selectedRecipe) {
+      setActiveStep("step2");
+    } else {
+      setActiveStep("step1");
+    }
+  }, [selectedRecipe, scaledRecipe]);
   
   const handleFontSizeChange = (value: 'normal' | 'large' | 'extra-large') => {
     updateUserPreferences({ fontSize: value });
@@ -105,43 +121,90 @@ function CalculatorContent() {
         </Card>
       </header>
       
-      <main>
-        <Tabs defaultValue="select" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 mb-6">
-            <TabsTrigger value="select">Select Recipe</TabsTrigger>
-            <TabsTrigger value="calculate" disabled={!selectedRecipe}>
-              Scale Recipe
-            </TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="select">
-            <RecipeList />
-          </TabsContent>
-          
-          <TabsContent value="calculate">
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              <div className="md:col-span-1">
+      <main className="max-w-4xl mx-auto">
+        <Accordion 
+          type="single" 
+          collapsible 
+          value={activeStep}
+          onValueChange={setActiveStep}
+          defaultValue="step1"
+          className="w-full space-y-4"
+        >
+          {/* Step 1: Select Recipe */}
+          <AccordionItem value="step1" className="border rounded-lg overflow-hidden">
+            <AccordionTrigger className="px-6 py-4 bg-slate-50 hover:bg-slate-100">
+              <div className="flex items-center">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground mr-3">1</span>
+                <div className="text-left">
+                  <h3 className="text-lg font-medium">Select Recipe</h3>
+                  <p className="text-sm text-muted-foreground">Choose a recipe to scale</p>
+                </div>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="px-6 py-4">
+              <RecipeList />
+            </AccordionContent>
+          </AccordionItem>
+
+          {/* Step 2: Scale Recipe */}
+          <AccordionItem value="step2" className="border rounded-lg overflow-hidden" disabled={!selectedRecipe}>
+            <AccordionTrigger className="px-6 py-4 bg-slate-50 hover:bg-slate-100">
+              <div className="flex items-center">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground mr-3">2</span>
+                <div className="text-left">
+                  <h3 className="text-lg font-medium">Scale Recipe</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {selectedRecipe 
+                      ? `Adjust scaling for "${selectedRecipe.name}"`
+                      : "Select a recipe first"}
+                  </p>
+                </div>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="px-6 py-4">
+              {selectedRecipe ? (
                 <CalculatorForm />
+              ) : (
+                <p className="text-muted-foreground py-4">Please select a recipe first</p>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+
+          {/* Step 3: View Scaled Recipe */}
+          <AccordionItem value="step3" className="border rounded-lg overflow-hidden" disabled={!scaledRecipe}>
+            <AccordionTrigger className="px-6 py-4 bg-slate-50 hover:bg-slate-100">
+              <div className="flex items-center">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground mr-3">3</span>
+                <div className="text-left">
+                  <h3 className="text-lg font-medium">Scaled Recipe</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {scaledRecipe 
+                      ? `"${scaledRecipe.name}" scaled to ${scaledRecipe.servings} servings`
+                      : "Complete steps 1 and 2 first"}
+                  </p>
+                </div>
               </div>
-              
-              <div className="md:col-span-1 lg:col-span-2">
-                {scaledRecipe ? (
-                  <ResultsDisplay />
-                ) : (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Scaled recipe</CardTitle>
-                      <CardDescription>
-                        Fill out the calculator form to see your scaled recipe
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                )}
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
+            </AccordionTrigger>
+            <AccordionContent className="px-6 py-4">
+              {scaledRecipe ? (
+                <ResultsDisplay />
+              ) : (
+                <p className="text-muted-foreground py-4">Please select a recipe and set scaling options first</p>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </main>
+      
+      <footer className="mt-16 pt-8 border-t border-gray-200 text-center text-gray-600">
+        <p>
+          This calculator is provided as a free service for our community.
+          For more recipes and cooking tips, join our{' '}
+          <a href="#" className="text-blue-600 underline">
+            Premium Recipe Community
+          </a>
+        </p>
+      </footer>
     </div>
   );
 }

@@ -99,6 +99,8 @@ export const CalculatorForm: React.FC = () => {
     }
 
     scaleRecipe(selectedRecipe, scalingFactor);
+    
+    // The accordion will automatically advance to step3 via the useEffect in the parent component
   };
 
   const handlePanShapeChange = (value: 'rectangle' | 'round') => {

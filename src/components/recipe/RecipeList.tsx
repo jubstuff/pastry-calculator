@@ -50,11 +50,7 @@ export const RecipeList: React.FC = () => {
   const handleRecipeSelect = (recipe: Recipe) => {
     setSelectedRecipe(recipe);
     
-    // Find the "Scale Recipe" tab trigger and click it
-    const scaleTab = document.querySelector('[value="calculate"]') as HTMLElement;
-    if (scaleTab) {
-      scaleTab.click();
-    }
+    // The accordion will automatically advance to step2 via the useEffect in the parent component
   };
   
   return (
