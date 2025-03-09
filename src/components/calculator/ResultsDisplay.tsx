@@ -4,7 +4,6 @@ import React from 'react';
 import { useRecipes } from '@/lib/context/RecipeContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -156,14 +155,6 @@ export const ResultsDisplay: React.FC = () => {
                 <h2 className="text-2xl font-bold">{scaledRecipe.name}</h2>
                 <p className="text-gray-600">{scaledRecipe.description}</p>
               </div>
-              
-              {scaledRecipe.imageUrl && (
-                <img 
-                  src={scaledRecipe.imageUrl} 
-                  alt={scaledRecipe.name}
-                  className="w-32 h-32 object-cover rounded-lg"
-                />
-              )}
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
