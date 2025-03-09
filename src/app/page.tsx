@@ -78,18 +78,18 @@ function CalculatorContent() {
     <div className={`container mx-auto px-4 py-8 ${getFontSizeClass()} ${getContrastClass()}`}>
       <header className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Pastry recipe calculator</h1>
-        <p className="text-gray-600 mb-6">
+        <p className="text-gray-600 mb-4">
           Scale your favorite recipes to any serving size or pan dimension
         </p>
         
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>Accessibility settings</CardTitle>
+        <Card className="mb-6 border border-gray-200 shadow-sm">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg">Accessibility settings</CardTitle>
             <CardDescription>
               Customize the display to make it easier to read
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-wrap gap-6">
+          <CardContent className="flex flex-wrap gap-6 pt-2">
             <div className="space-y-2">
               <Label htmlFor="font-size" className="text-base">Font size</Label>
               <Select 
@@ -131,10 +131,10 @@ function CalculatorContent() {
           className="w-full space-y-4"
         >
           {/* Step 1: Select Recipe */}
-          <AccordionItem value="step1" className="border rounded-lg overflow-hidden">
-            <AccordionTrigger className="px-6 py-4 bg-slate-50 hover:bg-slate-100">
+          <AccordionItem value="step1" className="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+            <AccordionTrigger className="px-6 py-4 bg-white hover:bg-gray-50">
               <div className="flex items-center">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground mr-3">1</span>
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground mr-3 shadow-sm">1</span>
                 <div className="text-left">
                   <h3 className="text-lg font-medium">Select Recipe</h3>
                   <p className="text-sm text-muted-foreground">Choose a recipe to scale</p>
@@ -147,10 +147,10 @@ function CalculatorContent() {
           </AccordionItem>
 
           {/* Step 2: Scale Recipe */}
-          <AccordionItem value="step2" className="border rounded-lg overflow-hidden" disabled={!selectedRecipe}>
-            <AccordionTrigger className="px-6 py-4 bg-slate-50 hover:bg-slate-100">
+          <AccordionItem value="step2" className="border border-gray-200 rounded-lg overflow-hidden shadow-sm" disabled={!selectedRecipe}>
+            <AccordionTrigger className="px-6 py-4 bg-white hover:bg-gray-50">
               <div className="flex items-center">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground mr-3">2</span>
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground mr-3 shadow-sm">2</span>
                 <div className="text-left">
                   <h3 className="text-lg font-medium">Scale Recipe</h3>
                   <p className="text-sm text-muted-foreground">
@@ -171,10 +171,10 @@ function CalculatorContent() {
           </AccordionItem>
 
           {/* Step 3: View Scaled Recipe */}
-          <AccordionItem value="step3" className="border rounded-lg overflow-hidden" disabled={!scaledRecipe}>
-            <AccordionTrigger className="px-6 py-4 bg-slate-50 hover:bg-slate-100">
+          <AccordionItem value="step3" className="border border-gray-200 rounded-lg overflow-hidden shadow-sm" disabled={!scaledRecipe}>
+            <AccordionTrigger className="px-6 py-4 bg-white hover:bg-gray-50">
               <div className="flex items-center">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground mr-3">3</span>
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground mr-3 shadow-sm">3</span>
                 <div className="text-left">
                   <h3 className="text-lg font-medium">Scaled Recipe</h3>
                   <p className="text-sm text-muted-foreground">
