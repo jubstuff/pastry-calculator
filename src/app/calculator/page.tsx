@@ -1,8 +1,6 @@
-"use client"
+// app/pages/calculator.tsx
 
 import React from 'react';
-import { RecipeProvider } from '@/lib/context/RecipeContext';
-import { sampleRecipes } from '@/lib/data/sampleRecipes';
 import { useRecipes } from '@/lib/context/RecipeContext';
 import { RecipeList } from '@/components/recipe/RecipeList';
 import { CalculatorForm } from '@/components/calculator/CalculatorForm';
@@ -14,23 +12,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-// Apply global high contrast styles if needed
-const highContrastStyles = `
-  .contrast-high {
-    filter: contrast(1.2);
-  }
-  
-  .contrast-high button {
-    border-width: 2px;
-  }
-  
-  .contrast-high a, 
-  .contrast-high button {
-    text-decoration: underline;
-  }
-`;
-
-function CalculatorContent() {
+export default function CalculatorPage() {
   const { selectedRecipe, scaledRecipe, userPreferences, updateUserPreferences } = useRecipes();
   
   const handleFontSizeChange = (value: 'normal' | 'large' | 'extra-large') => {
@@ -142,17 +124,16 @@ function CalculatorContent() {
           </TabsContent>
         </Tabs>
       </main>
+      
+      <footer className="mt-16 pt-8 border-t border-gray-200 text-center text-gray-600">
+        <p>
+          This calculator is provided as a free service for our community.
+          For more recipes and cooking tips, join our{' '}
+          <a href="#" className="text-blue-600 underline">
+            Premium Recipe Community
+          </a>
+        </p>
+      </footer>
     </div>
-  );
-}
-
-export default function Home() {
-  return (
-    <>
-      <style jsx global>{highContrastStyles}</style>
-      <RecipeProvider initialRecipes={sampleRecipes}>
-        <CalculatorContent />
-      </RecipeProvider>
-    </>
   );
 }
